@@ -79,27 +79,65 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      //get all rows
+      //var allRows = this.rows();
+      //extract the row we are working on by index
+      var thisRow = this.get(rowIndex);
+      //console.log(thisRow);
+      //define items found on rows
+      var items = 0;
+      //iterate over the row to see how many items exist (1 equals item, 0 equals no item)
+      for (var i = 0; i < thisRow.length; i++) {
+        if (thisRow[i] === 1) {
+          items++;
+        }
+      }
+      return items > 1;
+
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      // get all rows
+      var rows = this.rows();
+      var result = false;
+      //for each row run a "has row conflicts?" function
+      for (var i = 0; i < rows.length; i++) {
+        if (this.hasRowConflictAt(i)) {
+          result = true;
+        }
+      }
+      return result;
     },
-
-
 
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var allRows = this.rows();
+      var nubmersOfColumns = this.get('n');
+      var items = 0;
+      for ( var i = 0; i < nubmersOfColumns; i++) {
+        if (allRows[i][colIndex] === 1) {
+          items ++;
+        }
+      }
+
+      return items > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var allRows = this.rows();
+      var nubmersOfColumns = this.get('n');
+      var result = false;
+      for (var i = 0; i < nubmersOfColumns; i++) {
+        if (this.hasColConflictAt(i)) {
+          result = true;
+        }
+      }
+      return result;
     },
 
 
@@ -108,8 +146,32 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow, rowIndex = 0) {
+      var allRows = this.rows();
+      var numberOfColumns = this.get('n');
+      var items = 0;
+      var offset = this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, majorDiagonalColumnIndexAtFirstRow);
+      //check if this col index at 0 row is a 1??
+
+      for (var i = majorDiagonalColumnIndexAtFirstRow; i < numberOfColumns; i++) {
+        if (allRows[0 + i][i + i] === 1) {
+          items++;
+        }
+      }
+      // for (var i = 0; i < numberOfColumns; i++) {
+      //   for (var j = majorDiagonalColumnIndexAtFirstRow; j < numberOfColumns; j++ ) {
+      //     if (allRows[i][j] === 1 && this._getFirstRowColumnIndexForMajorDiagonalOn(i, j) === offset) {
+      //       items ++;
+      //     }
+      //   }
+      // }
+
+      return items > 1;
+      //then push that one to item
+      //else
+      //loop this col index+1, row+1, this col index+2, this row index + 2 , + 3, etc
+
+
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -146,3 +208,4 @@
   };
 
 }());
+
